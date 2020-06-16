@@ -8,4 +8,8 @@ Mern Blog - блог на стеке MERN.
 ### Routes
 |METHOD|URL|
 |------|---|
-|GET|/api/test
+|GET|/api/test|
+|POST|/api/users/register|
+|POST|/api/users/login|
+|POST|/api/users/logout|
+|POST|/api/users/logoutall|

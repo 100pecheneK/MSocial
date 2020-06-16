@@ -73,7 +73,7 @@ router.get('/me', auth, async (req, res) => {
 })
 
 router.post(
-  '/me/logout',
+  '/logout',
   auth,
   async (req, res) => {
     try {
@@ -88,7 +88,7 @@ router.post(
   })
 
 router.post(
-  '/me/logoutall',
+  '/logoutall',
   auth,
   async (req, res) => {
     try {
