@@ -193,7 +193,7 @@ headers: {
 }
 ---
 {
-    "avatar": [File]
+    "avatar": "[File]"
 }
 ```
 
