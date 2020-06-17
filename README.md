@@ -8,17 +8,21 @@ Mern Blog - блог на стеке MERN.
 
 ### TEST
 
-#### /api/test
+| @       | INFO      |
+| ------- | --------- |
+| @url    | /api/test |
+| @method | GET       |
 
-@method **GET**
+---
 
 ---
 
 ### USER
 
-#### /api/users/register
-
-@method **POST**
+| @       | INFO                |
+| ------- | ------------------- |
+| @url    | /api/users/register |
+| @method | POST                |
 
 Accept:
 
@@ -38,9 +42,12 @@ Return:
 }
 ```
 
-#### /api/users/login
+---
 
-@method **POST**
+| @       | INFO             |
+| ------- | ---------------- |
+| @url    | /api/users/login |
+| @method | POST             |
 
 Accept:
 
@@ -59,9 +66,12 @@ Return:
 }
 ```
 
-#### /api/users/logout
+---
 
-@method **POST**
+| @       | INFO              |
+| ------- | ----------------- |
+| @url    | /api/users/logout |
+| @method | POST              |
 
 Accept:
 
@@ -77,9 +87,12 @@ Return:
 Успешный выход
 ```
 
-#### /api/users/logoutall
+---
 
-@method **POST**
+| @       | INFO                |
+| ------- | ------------------- |
+| @url    | api/users/logoutall |
+| @method | POST                |
 
 Accept:
 
@@ -97,11 +110,14 @@ Return:
 
 ---
 
+---
+
 ### PROFILE
 
-#### /api/profiles/me
-
-@method **POST**
+| @       | INFO             |
+| ------- | ---------------- |
+| @url    | /api/profiles/me |
+| @method | GET              |
 
 Accept:
 
@@ -127,9 +143,12 @@ Return:
 }
 ```
 
-#### /api/profiles/me
+---
 
-@method **POST**
+| @       | INFO             |
+| ------- | ---------------- |
+| @url    | /api/profiles/me |
+| @method | POST             |
 
 Accept:
 
@@ -158,9 +177,12 @@ Return:
 }
 ```
 
-#### /api/profiles/me/avatar
+---
 
-@method **POST**
+| @       | INFO                    |
+| ------- | ----------------------- |
+| @url    | /api/profiles/me/avatar |
+| @method | POST                    |
 
 Accept:
 
