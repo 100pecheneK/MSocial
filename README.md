@@ -8,9 +8,10 @@ Mern Blog - блог на стеке MERN.
 
 ### TEST
 
-#### /api/test
-
-@method **GET**
+||
+----
+|/api/test|
+|@method **GET**|
 
 ---
 
