@@ -33,8 +33,9 @@ router.post(
       user = new User(req.body)
       await user.save()
       const token = await user.generateAuthToken()
-      res.status(201).json({user, token})
+      res.status(201).json({token})
     } catch (error) {
+      console.error(error)
       sendBadRequest(res, error)
     }
   })
@@ -56,11 +57,13 @@ router.post(
     }
 
     try {
+
       const {email, password} = req.body
       // Авторизация или throw Error('Неверные данные')
       const user = await User.findByCredentials(email, password)
       const token = await user.generateAuthToken()
-      res.json({user, token})
+      res.json({token})
+
     } catch (error) {
       // Поймает ошибку Error('Неверные данные')
       return sendBadRequest(res, error.message)
@@ -69,7 +72,15 @@ router.post(
 
 router.get('/me', auth, async (req, res) => {
   // TODO: перенести в отдельный файл profile.js
-  res.json(req.user)
+  try {
+    const user = await User.findById(req.userId).select('-password -tokens')
+    if (!user) {
+      //
+    }
+    res.json(user)
+  } catch (e) {
+
+  }
 })
 
 router.post(
@@ -78,9 +89,13 @@ router.post(
   async (req, res) => {
     try {
       // Выход пользователя с одного устройства - останутся все, кроме текущего
-      req.user.tokens = req.user.tokens
+      const user = await User.findById(req.userId)
+      if (!user) {
+        sendBadRequest(res, 'Пользователя не существует')
+      }
+      user.tokens = user.tokens
         .filter(token => token.token !== req.token)
-      await req.user.save()
+      await user.save()
       res.send('Успешный выход')
     } catch (error) {
       sendServerError(res, error)
@@ -93,8 +108,12 @@ router.post(
   async (req, res) => {
     try {
       // Выход со всех устройств
-      req.user.tokens.splice(0, req.user.tokens.length)
-      await req.user.save()
+      const user = await User.findById(req.userId)
+      if (!user) {
+        sendBadRequest(res, 'Пользователя не существует')
+      }
+      user.tokens.splice(0, user.tokens.length)
+      await user.save()
       res.send('Успешный выход со всех устройств')
     } catch (error) {
       sendServerError(res, error)
