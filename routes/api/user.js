@@ -5,6 +5,7 @@ const sendBadRequest = require('../../utils/sendBadRequest')
 const sendServerError = require('../../utils/sendServerError')
 const User = require('../../models/User')
 const router = express.Router()
+const Profile = require('../../models/Profile')
 
 router.post(
   '/register',
@@ -32,6 +33,14 @@ router.post(
       // Создание пользователя
       user = new User(req.body)
       await user.save()
+
+      // Создание профиля
+      const profile = new Profile({
+        user: user.id
+      })
+      await profile.save()
+
+      // Генерация токена
       const token = await user.generateAuthToken()
       res.status(201).json({token})
     } catch (error) {
@@ -70,19 +79,6 @@ router.post(
     }
   })
 
-router.get('/me', auth, async (req, res) => {
-  // TODO: перенести в отдельный файл profile.js
-  try {
-    const user = await User.findById(req.userId).select('-password -tokens')
-    if (!user) {
-      //
-    }
-    res.json(user)
-  } catch (e) {
-
-  }
-})
-
 router.post(
   '/logout',
   auth,
@@ -91,7 +87,7 @@ router.post(
       // Выход пользователя с одного устройства - останутся все, кроме текущего
       const user = await User.findById(req.userId)
       if (!user) {
-        sendBadRequest(res, 'Пользователя не существует')
+        return sendBadRequest(res, 'Пользователя не существует')
       }
       user.tokens = user.tokens
         .filter(token => token.token !== req.token)
@@ -110,7 +106,7 @@ router.post(
       // Выход со всех устройств
       const user = await User.findById(req.userId)
       if (!user) {
-        sendBadRequest(res, 'Пользователя не существует')
+        return sendBadRequest(res, 'Пользователя не существует')
       }
       user.tokens.splice(0, user.tokens.length)
       await user.save()

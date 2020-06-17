@@ -2,80 +2,191 @@
 
 Mern Blog - блог на стеке MERN.
 
+# Server API
 
-## Server API
+## Routes
 
-### Routes
+### TEST
 
 #### /api/test
-@method *GET*
+
+@method **GET**
 
 ---
+
+### USER
+
 #### /api/users/register
-@method *POST*
+
+@method **POST**
 
 Accept:
+
 ```json
 {
-    "name": "Misha",
-    "email": "mistermihail24@gmail.com",
-    "password": "123456"
-}
-```
-Return:
-```json
-{
-    "token": "eyJhbGciOiJ..."
+  "name": "Misha",
+  "email": "mistermihail24@gmail.com",
+  "password": "123456"
 }
 ```
 
----
+Return:
+
+```json
+{
+  "token": "eyJhbGciOiJ..."
+}
+```
 
 #### /api/users/login
-@method *POST*
+
+@method **POST**
 
 Accept:
+
 ```json
 {
-    "email": "mistermihail23@gmail.com",
-    "password": "123213456"
-}
-```
-Return:
-```json
-{
-    "token": "eyJhbGciOiJ..."
+  "email": "mistermihail23@gmail.com",
+  "password": "123213456"
 }
 ```
 
----
+Return:
+
+```json
+{
+  "token": "eyJhbGciOiJ..."
+}
+```
 
 #### /api/users/logout
-@method *POST*
+
+@method **POST**
 
 Accept:
-```
+
+```json
 headers: {
-    Authorization: Bearer eyJhbGc...
+    "Authorization": "Bearer eyJhbGc..."
 }
 ```
+
 Return:
+
 ```text
 Успешный выход
 ```
 
----
-
 #### /api/users/logoutall
-@method *POST*
+
+@method **POST**
 
 Accept:
-```
+
+```json
 headers: {
-    Authorization: Bearer eyJhbGc...
+    "Authorization": "Bearer eyJhbGc..."
 }
 ```
+
 Return:
+
 ```text
 Успешный выход со всех устройств
+```
+
+---
+
+### PROFILE
+
+#### /api/profiles/me
+
+@method **POST**
+
+Accept:
+
+```json
+headers: {
+    "Authorization": "Bearer eyJhbGc..."
+}
+```
+
+Return:
+
+```json
+{
+  "avatar": "uploads/profiles/userId/avatar.png",
+  "_id": "5ee9e4ccc6181d03655e741c",
+  "user": {
+    "_id": "5ee9e4ccc6181d03655e741b",
+    "name": "Misha"
+  },
+  "bio": "Bio info",
+  "date": "2020-06-17T09:39:24.267Z",
+  "__v": 0
+}
+```
+
+#### /api/profiles/me
+
+@method **POST**
+
+Accept:
+
+```json
+headers: {
+    "Authorization": "Bearer eyJhbGc..."
+}
+{
+    "bio": "Bio info"
+}
+```
+
+Return:
+
+```json
+{
+  "avatar": "uploads/profiles/userId/avatar.png",
+  "_id": "5ee9e4ccc6181d03655e741c",
+  "user": {
+    "_id": "5ee9e4ccc6181d03655e741b",
+    "name": "Misha"
+  },
+  "bio": "Bio info",
+  "date": "2020-06-17T09:39:24.267Z",
+  "__v": 0
+}
+```
+
+#### /api/profiles/me/avatar
+
+@method **POST**
+
+Accept:
+
+```json
+headers: {
+    "Content-Type": "multipart/form-data",
+    "Authorization": "Bearer eyJhbGc..."
+}
+---
+{
+    "avatar": [File]
+}
+```
+
+Return:
+
+```json
+{
+  "avatar": "uploads/profiles/userId/newAvatar.png",
+  "_id": "5ee9e4ccc6181d03655e741c",
+  "user": {
+    "_id": "5ee9e4ccc6181d03655e741b",
+    "name": "Misha"
+  },
+  "bio": "Bio info",
+  "date": "2020-06-17T09:39:24.267Z",
+  "__v": 0
+}
 ```

@@ -18,6 +18,7 @@ app.use(cors())
 app.use('/uploads', express.static('uploads'))
 app.use('/api/test', require('./routes/api/test'))
 app.use('/api/users', require('./routes/api/user'))
+app.use('/api/profiles', require('./routes/api/profile'))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))

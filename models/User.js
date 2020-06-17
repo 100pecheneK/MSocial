@@ -19,10 +19,6 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  avatar: {
-    type: String,
-    default: 'uploads/default/default.jpg'
-  },
   tokens: [{
     token: {
       type: String,
