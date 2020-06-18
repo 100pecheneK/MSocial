@@ -1,4 +1,4 @@
-const logError = require('./logError')
+const logError = require('../logError')
 
 module.exports = (res, error) => {
   const date = new Date()

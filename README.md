@@ -83,8 +83,10 @@ headers: {
 
 Return:
 
-```text
-Успешный выход
+```json
+{
+    "msg": "Успешный выход"
+}
 ```
 
 ---
@@ -104,8 +106,10 @@ headers: {
 
 Return:
 
-```text
-Успешный выход со всех устройств
+```json
+{
+    "msg": "Успешный выход со всех устройств"
+}
 ```
 
 ---
@@ -191,9 +195,8 @@ headers: {
     "Content-Type": "multipart/form-data",
     "Authorization": "Bearer eyJhbGc..."
 }
----
 {
-    "avatar": "[File]"
+    "avatar": "[File] < 5mb"
 }
 ```
 
@@ -210,5 +213,27 @@ Return:
   "bio": "Bio info",
   "date": "2020-06-17T09:39:24.267Z",
   "__v": 0
+}
+```
+
+---
+| @       | INFO             |
+| ------- | ---------------- |
+| @url    | /api/profiles/me |
+| @method | delete           |
+
+Accept:
+
+```json
+headers: {
+    "Content-Type": "multipart/form-data",
+    "Authorization": "Bearer eyJhbGc..."
+}
+```
+
+Return:
+```json
+{
+    "msg": "Пользователь удалён"
 }
 ```

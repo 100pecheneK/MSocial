@@ -41,7 +41,6 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.methods.generateAuthToken = async function () {
-  // Generate an auth token for the user
   const user = this
   const token = jwt.sign({_id: user._id}, config.get('jwtSecret'))
   user.tokens = user.tokens.concat({token})
@@ -50,7 +49,6 @@ UserSchema.methods.generateAuthToken = async function () {
 }
 
 UserSchema.statics.findByCredentials = async (email, password) => {
-  // Search for a user by email and password.
   const user = await User.findOne({email})
   if (!user) {
     throw new Error('Неверные данные')

@@ -1,16 +1,14 @@
+// Express
 const express = require('express')
-const config = require('config')
+// Middleware
+const {auth, profileAvatarUpload} = require('../../middleware')
+// Utils
+const {uploaderUtil} = require('../../utils/fs')
+const {sendBadRequest, sendServerError} = require('../../utils/sendStatus')
+// Models
+const {User, Profile} = require('../../models')
+
 const router = express.Router()
-const path = require('path')
-const auth = require('../../middleware/auth')
-const {check, validationResult} = require('express-validator')
-const Profile = require('../../models/Profile')
-const User = require('../../models/User')
-const sendBadRequest = require('../../utils/sendBadRequest')
-const sendServerError = require('../../utils/sendServerError')
-const profileAvatarUpload = require('../../middleware/profileAvatarUpload')
-const {getUploadsPath, getAvatarPath} = require('../../utils/getPath')
-const fs = require('fs')
 
 router.get(
   '/me',
@@ -20,7 +18,7 @@ router.get(
       const profile = await Profile.findOne({user: req.userId}).populate('user', ['name'])
       res.json(profile)
     } catch (e) {
-      sendServerError(res, e.message)
+      sendServerError(res, e)
     }
   })
 
@@ -37,16 +35,12 @@ router.post(
         return sendBadRequest(res, 'Аватар обязателен')
       }
       const profile = await Profile.findOne({user: req.userId})
-      if (path.basename(profile.avatar) !== 'default.jpg') {
-        const avatarPath = getAvatarPath(profile.avatar)
-        fs.existsSync(avatarPath) && fs.unlinkSync(avatarPath)
-      }
+      uploaderUtil.removeProfileAvatar(profile.avatar)
       profile.avatar = avatar.path
       profile.save()
       return res.json(profile)
     } catch (e) {
-      console.error(e)
-      res.status(500).send('Ошибка сервера')
+      sendServerError(res, e)
     }
   }
 )
@@ -56,6 +50,7 @@ router.post(
   auth,
   async (req, res) => {
     const {bio} = req.body
+
     // Build profile object
     const profileFields = {}
     profileFields.user = req.userId
@@ -69,10 +64,27 @@ router.post(
       )
       return res.json(profile)
     } catch (e) {
-      console.error(e)
-      res.status(500).send('Ошибка сервера')
+      sendServerError(res, e)
     }
   }
 )
 
+router.delete(
+  '/me',
+  auth,
+  async (req, res) => {
+    try {
+      // Remove profile and avatar
+      const profile = await Profile.findOne({user: req.userId})
+      uploaderUtil.removeProfileDir(req.userId)
+      await profile.remove()
+
+      // Remove User
+      await User.findOneAndRemove({_id: req.userId})
+
+      res.json({msg: 'Пользователь удалён'})
+    } catch (e) {
+      sendServerError(res, e)
+    }
+  })
 module.exports = router

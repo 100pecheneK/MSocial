@@ -1,11 +1,14 @@
+// Express
 const express = require('express')
 const {check, validationResult} = require('express-validator')
-const auth = require('../../middleware/auth')
-const sendBadRequest = require('../../utils/sendBadRequest')
-const sendServerError = require('../../utils/sendServerError')
-const User = require('../../models/User')
+// Middleware
+const {auth} = require('../../middleware')
+// Utils
+const {sendBadRequest, sendServerError} = require('../../utils/sendStatus')
+// Models
+const {User, Profile} = require('../../models')
+
 const router = express.Router()
-const Profile = require('../../models/Profile')
 
 router.post(
   '/register',
@@ -30,21 +33,21 @@ router.post(
       if (user) {
         return sendBadRequest(res, 'Пользователь с таким Email уже существует')
       }
-      // Создание пользователя
+      // Create user
       user = new User(req.body)
       await user.save()
 
-      // Создание профиля
+      // Create profile
       const profile = new Profile({
         user: user.id
       })
       await profile.save()
 
-      // Генерация токена
+      // Generate token
       const token = await user.generateAuthToken()
+
       res.status(201).json({token})
     } catch (error) {
-      console.error(error)
       sendBadRequest(res, error)
     }
   })
@@ -66,16 +69,16 @@ router.post(
     }
 
     try {
-
       const {email, password} = req.body
-      // Авторизация или throw Error('Неверные данные')
+
+      // Authenticate or throw Error
       const user = await User.findByCredentials(email, password)
       const token = await user.generateAuthToken()
       res.json({token})
 
-    } catch (error) {
-      // Поймает ошибку Error('Неверные данные')
-      return sendBadRequest(res, error.message)
+    } catch (e) {
+      // catch Error('Неверные данные')
+      sendBadRequest(res, e.message)
     }
   })
 
@@ -84,17 +87,14 @@ router.post(
   auth,
   async (req, res) => {
     try {
-      // Выход пользователя с одного устройства - останутся все, кроме текущего
       const user = await User.findById(req.userId)
-      if (!user) {
-        return sendBadRequest(res, 'Пользователя не существует')
-      }
-      user.tokens = user.tokens
-        .filter(token => token.token !== req.token)
+      // Remove token from current device
+      user.tokens = user.tokens.filter(token => token.token !== req.token)
       await user.save()
-      res.send('Успешный выход')
-    } catch (error) {
-      sendServerError(res, error)
+
+      res.json({msg: 'Успешный выход'})
+    } catch (e) {
+      sendServerError(res, e)
     }
   })
 
@@ -103,16 +103,16 @@ router.post(
   auth,
   async (req, res) => {
     try {
-      // Выход со всех устройств
       const user = await User.findById(req.userId)
-      if (!user) {
-        return sendBadRequest(res, 'Пользователя не существует')
-      }
+      // Remove all tokens
       user.tokens.splice(0, user.tokens.length)
+
       await user.save()
-      res.send('Успешный выход со всех устройств')
+      res.json({msg: 'Успешный выход со всех устройств'})
     } catch (error) {
       sendServerError(res, error)
     }
   })
+
+
 module.exports = router

@@ -1,13 +1,12 @@
 const path = require('path')
 const multer = require('multer')
 const {v4: uuidv4} = require('uuid')
-const mkdirs = require('../utils/mkdirs')
-const {getUploadsPath} = require('../utils/getPath')
+const {mkdirs, uploaderUtil} = require('../utils/fs')
 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadsPath = getUploadsPath()
+    const uploadsPath = uploaderUtil.uploads()
     const profilesPath = path.join(uploadsPath, 'profiles')
     const userProfilePath = path.join(profilesPath, req.userId)
     mkdirs(uploadsPath, profilesPath, userProfilePath)
