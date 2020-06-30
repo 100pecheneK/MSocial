@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-router.get(
-  '/',
-  (req, res) => {
-    res.send('Server is working!!!')
-  }
-)
+/**
+ * Test route
+ * Only for check, that server are working
+ */
+router.get('/', (req, res) => {
+  res.send('Server is working!!!')
+})
 
 module.exports = router

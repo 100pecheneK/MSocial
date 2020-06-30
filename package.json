@@ -1,8 +1,8 @@
 {
-  "name": "mernblog",
+  "name": "msocial",
   "version": "1.0.0",
   "main": "server.js",
-  "repository": "https://github.com/100pecheneK/mernblog.git",
+  "repository": "https://github.com/100pecheneK/MSocial.git",
   "author": "100pecheneK <mistermihail23@gmail.com>",
   "license": "MIT",
   "scripts": {

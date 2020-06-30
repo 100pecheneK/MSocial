@@ -3,23 +3,30 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const Schema = mongoose.Schema
 
+/**
+ * User rofile schema
+ */
 const ProfileSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
   },
   avatar: {
     type: String,
-    default: 'uploads/default/default.jpg'
+    default: 'uploads/default/default.jpg',
   },
+  // User bio info
   bio: {
-    type: String
+    type: String,
   },
-  date: {
+  // Profile created date
+  createdDate: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 })
+
+// Add paginate to Profile Schema
 ProfileSchema.plugin(mongoosePaginate)
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema)

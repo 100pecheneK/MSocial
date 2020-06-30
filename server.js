@@ -10,8 +10,7 @@ const app = express()
 connectDB()
 
 // Init Middleware
-app.use(express.json({extended: false}))
-// TODO: Если не сработает CORS, то настроить OPTIONS https://expressjs.com/en/resources/middleware/cors.html
+app.use(express.json({ extended: false }))
 app.use(cors())
 
 // Define Routes
