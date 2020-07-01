@@ -9,7 +9,8 @@
     "start": "node server.js",
     "devserver": "nodemon server.js",
     "devclient": "yarn --cwd ./client start ",
-    "dev": "concurrently \"yarn run devserver\" \"yarn run devclient\""
+    "dev": "concurrently \"yarn run devserver\" \"yarn run devclient\"",
+    "doc": "apidoc -i ./routes -o ./README/APIDoc\n"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -25,6 +26,7 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "apidoc": "^0.23.0",
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4"
   }

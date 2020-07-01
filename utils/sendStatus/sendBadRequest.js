@@ -10,7 +10,7 @@ const sendBadRequest = (res, error, ...otherErrors) => {
   const errors = Array.isArray(error)
     ? { errors: error }
     : errorsMsgs(error, ...otherErrors)
-  return res.status(400).json(jsonErrors)
+  return res.status(400).json(errors)
 }
 
 module.exports = sendBadRequest
