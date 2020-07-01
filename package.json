@@ -10,7 +10,7 @@
     "devserver": "nodemon server.js",
     "devclient": "yarn --cwd ./client start ",
     "dev": "concurrently \"yarn run devserver\" \"yarn run devclient\"",
-    "doc": "apidoc -i ./routes -o ./README/APIDoc\n"
+    "doc": "apidoc -i ./routes -o ./docs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
