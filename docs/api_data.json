@@ -317,7 +317,7 @@
           {
             "group": "Parameter",
             "type": "String",
-            "size": ">6",
+            "size": "6..",
             "optional": false,
             "field": "password",
             "description": "<p>Password of the User.</p>"
@@ -367,5 +367,333 @@
     },
     "filename": "routes/api/user/authentication.js",
     "groupTitle": "Authentication"
+  },
+  {
+    "type": "delete",
+    "url": "/profile/me",
+    "title": "Delete user account",
+    "version": "0.1.0",
+    "name": "Delete_user_account",
+    "group": "Profile",
+    "description": "<p>Delete User, User folder and Profile</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>message.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"msg\": \"Пользователь удалён\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/profile.js",
+    "groupTitle": "Profile"
+  },
+  {
+    "type": "post",
+    "url": "/profile/me",
+    "title": "Update User Profile",
+    "version": "0.1.0",
+    "name": "Update_User_Profile",
+    "group": "Profile",
+    "description": "<p>Create or update some fields in user profile</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "bio",
+            "description": "<p>User bio info</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "Relative",
+            "description": "<p>avatar url of user.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Create-Response:",
+          "content": "HTTP/1.1 201 Created\n{\n  \"_id\": \"5efc31e41b1fa004b99d3c37\",\n  \"user\": {\n    \"_id\": \"5efc31e41b1fa004b99d3c36\",\n    \"name\": \"Misha\"\n  },\n  \"createdDate\": \"2020-07-01T06:49:08.649Z\",\n  \"__v\": 0,\n  \"bio\": \"Моё био\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/profile.js",
+    "groupTitle": "Profile"
+  },
+  {
+    "type": "post",
+    "url": "/profile/me/avatar",
+    "title": "Change user avatar",
+    "version": "0.1.0",
+    "name": "User_avatar",
+    "group": "Profile",
+    "description": "<p>Change avatar of user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>Multipart.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Content-Type\": \"multipart/form-data; boundary=<calculated when request is sent>\",\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "size": "..5MB",
+            "optional": false,
+            "field": "avatar",
+            "description": "<p>User avatar</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "Relative",
+            "description": "<p>avatar url of user.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Create-Response:",
+          "content": "HTTP/1.1 201 Created\n{\n  \"avatar\": \"uploads/profiles/5efc31e41b1fa004b99d3c36/2020-07-01T08:54:10.878Z665bd1f3-7aa4-4250-a25f-2fc4a62e6c10.jpg\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Array of the errors objects.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad Request-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"errors\": [\n    {\n      \"msg\": \"Аватар обязателен\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/profile.js",
+    "groupTitle": "Profile"
+  },
+  {
+    "type": "get",
+    "url": "/profile/me",
+    "title": "User info",
+    "version": "0.1.0",
+    "name": "User_me",
+    "group": "Profile",
+    "description": "<p>Get info of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "_id",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>of User Profile.</p>"
+          },
+          {
+            "group": "200",
+            "type": "avatar",
+            "optional": false,
+            "field": "Relative",
+            "description": "<p>avatar url of user.</p>"
+          },
+          {
+            "group": "200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>User object.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "user._id",
+            "description": "<p>ID of User.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "user.name",
+            "description": "<p>Name of User.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "createdDate",
+            "description": "<p>Date when profile has been created.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"_id\": \"5efc31e41b1fa004b99d3c37\",\n  \"avatar\": \"uploads/default/default.jpg\",\n  \"user\": {\n      \"_id\": \"5efc31e41b1fa004b99d3c36\",\n      \"name\": \"Misha\"\n  },\n  \"createdDate\": \"2020-07-01T06:49:08.649Z\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/profile.js",
+    "groupTitle": "Profile"
   }
 ]

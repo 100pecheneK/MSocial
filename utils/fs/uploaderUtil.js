@@ -29,7 +29,7 @@ const isNotDefaultFile = (filePath) => path.basename(filePath) !== 'default.jpg'
  */
 const removeProfileAvatar = (avatar) => {
   if (isNotDefaultFile(avatar)) {
-    const avatarPath = avatar(avatar)
+    const avatarPath = getAvatarPath(avatar)
     fs.existsSync(avatarPath) && fs.unlinkSync(avatarPath)
   }
 }
@@ -39,7 +39,7 @@ const removeProfileAvatar = (avatar) => {
  * @param {string} userId
  */
 const removeProfileDir = (userId) => {
-  const userProfileDir = path.join(uploads(), 'profiles', userId)
+  const userProfileDir = path.join(getUploadPath(), 'profiles', userId)
   rimraf(userProfileDir, {}, () => {})
 }
 

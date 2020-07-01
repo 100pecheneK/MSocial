@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 })
 
 /**
- * Multer fileFiter settings
+ * Multer fileFilter settings
  * for uploading user`s Avatar
  */
 const fileFilter = (req, file, cb) => {

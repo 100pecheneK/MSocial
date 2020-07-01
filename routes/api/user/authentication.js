@@ -25,7 +25,7 @@ const router = express.Router()
  *
  * @apiParam {String} name Name of the User.
  * @apiParam {String} email Email of the User.
- * @apiParam {String{>6}} password Password of the User.
+ * @apiParam {String{6..}} password Password of the User.
  *
  * @apiSuccess (201) {String} Token of the registered User.
  * @apiError (400) {Object[]} errors Array of the errors objects.
