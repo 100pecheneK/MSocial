@@ -369,6 +369,361 @@
     "groupTitle": "Authentication"
   },
   {
+    "type": "get",
+    "url": "/user/friend/me/blackList",
+    "title": "My black list",
+    "version": "0.1.0",
+    "name": "My_Black_list",
+    "group": "Friend",
+    "description": "<p>Get black list of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "blackList",
+            "description": "<p>Friends in white list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"blackList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "get",
+    "url": "/user/friend/me",
+    "title": "My Friend List",
+    "version": "0.1.0",
+    "name": "My_Friends",
+    "group": "Friend",
+    "description": "<p>Get all friend list of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "whiteList",
+            "description": "<p>Friends in white list.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "inComingList",
+            "description": "<p>Incoming friend requests.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "outComingList",
+            "description": "<p>Outcoming friend requests.</p>"
+          },
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "blackList",
+            "description": "<p>People in black list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"whiteList\": [],\n  \"inComingList\": [],\n  \"outComingList\": [],\n  \"blackList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "get",
+    "url": "/user/friend/me/whitelist",
+    "title": "My white list",
+    "version": "0.1.0",
+    "name": "My_White_list",
+    "group": "Friend",
+    "description": "<p>Get white list of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "whiteList",
+            "description": "<p>Friends in white list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"whiteList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "get",
+    "url": "/user/friend/me/incominglist",
+    "title": "My incoming request",
+    "version": "0.1.0",
+    "name": "My_incoming_requests",
+    "group": "Friend",
+    "description": "<p>Get incoming request list of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "inComingList",
+            "description": "<p>Friends in incoming list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"inComingList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "get",
+    "url": "/user/friend/me/outcominglist",
+    "title": "My outcoming request",
+    "version": "0.1.0",
+    "name": "My_outcoming_requests",
+    "group": "Friend",
+    "description": "<p>Get incoming request list of authenticated user</p>",
+    "permission": [
+      {
+        "name": "user",
+        "title": "Authenticated User",
+        "description": "<p>User with valid token</p>"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token of User.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header-Example:",
+          "content": "{\n  \"Authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "outComingList",
+            "description": "<p>Friends in outcoming list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"outComingList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "get",
+    "url": "/user/friend/:id/whitelist",
+    "title": "User white list",
+    "version": "0.1.0",
+    "name": "Selected_user_whitelist",
+    "group": "Friend",
+    "description": "<p>Get white list of selected user</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String[]",
+            "optional": false,
+            "field": "whiteList",
+            "description": "<p>Friends in white list.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n  \"whiteList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
     "type": "delete",
     "url": "/profile/me",
     "title": "Delete user account",
@@ -486,10 +841,17 @@
         "201": [
           {
             "group": "201",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Profile owner.</p>"
+          },
+          {
+            "group": "201",
             "type": "String",
             "optional": false,
-            "field": "Relative",
-            "description": "<p>avatar url of user.</p>"
+            "field": "bit",
+            "description": "<p>User bio.</p>"
           }
         ]
       },
@@ -643,17 +1005,17 @@
         "200": [
           {
             "group": "200",
-            "type": "_id",
+            "type": "ObjectId",
             "optional": false,
-            "field": "ID",
-            "description": "<p>of User Profile.</p>"
+            "field": "_id",
+            "description": "<p>ID of User Profile.</p>"
           },
           {
             "group": "200",
-            "type": "avatar",
+            "type": "String",
             "optional": false,
-            "field": "Relative",
-            "description": "<p>avatar url of user.</p>"
+            "field": "avatar",
+            "description": "<p>Relative avatar url of user.</p>"
           },
           {
             "group": "200",
@@ -664,7 +1026,7 @@
           },
           {
             "group": "200",
-            "type": "String",
+            "type": "ObjectId",
             "optional": false,
             "field": "user._id",
             "description": "<p>ID of User.</p>"

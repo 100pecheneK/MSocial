@@ -7,5 +7,6 @@ const router = express.Router()
  */
 
 router.use('/auth', require('./authentication'))
+router.use('/friend', require('./friend'))
 
 module.exports = router

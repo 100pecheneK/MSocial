@@ -2,8 +2,6 @@
 const express = require('express')
 // Middleware
 const {auth, profileAvatarUpload} = require('../../middleware')
-// Errors
-const {MulterError} = require('multer')
 // Utils
 const {uploaderUtil} = require('../../utils/fs')
 const {sendBadRequest, sendServerError} = require('../../utils/sendStatus')
@@ -25,10 +23,10 @@ const router = express.Router()
  *    {
  *      "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk"
  *    }
- * @apiSuccess (200) {_id} ID of User Profile.
- * @apiSuccess (200) {avatar} Relative avatar url of user.
+ * @apiSuccess (200) {ObjectId} _id ID of User Profile.
+ * @apiSuccess (200) {String} avatar Relative avatar url of user.
  * @apiSuccess (200) {Object} user User object.
- * @apiSuccess (200) {String} user._id ID of User.
+ * @apiSuccess (200) {ObjectId} user._id ID of User.
  * @apiSuccess (200) {String} user.name Name of User.
  * @apiSuccess (200) {String} createdDate Date when profile has been created.
  * @apiSuccessExample {json} Success-Response:
@@ -105,9 +103,6 @@ router.post(
       await profile.save()
       return res.status(201).json({avatar: profile.avatar})
     } catch (e) {
-      if (e instanceof MulterError) {
-        return sendBadRequest(res, 'Аватар большой')
-      }
       sendServerError(res, e)
     }
   }
@@ -128,7 +123,8 @@ router.post(
  *      "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWU4YWI5MWZlMTk5ZjE1YzYyYTQzM2UiLCJpYXQiOjE1OTIzMDc0NDh9.DqgT0RH6g1Mm8fpbXYz6Bf4KGnsUxo-Vk-UNKmvptjk"
  *    }
  * @apiParam {String} bio User bio info
- * @apiSuccess (201) {String} Relative avatar url of user.
+ * @apiSuccess (201) {Object} user Profile owner.
+ * @apiSuccess (201) {String} bit User bio.
  * @apiSuccessExample {json} Create-Response:
  *    HTTP/1.1 201 Created
  *    {

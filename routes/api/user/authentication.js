@@ -6,7 +6,7 @@ const {auth} = require('../../../middleware')
 // Utils
 const {sendBadRequest, sendServerError} = require('../../../utils/sendStatus')
 // Models
-const {User, Profile} = require('../../../models')
+const {User, Profile, Friend} = require('../../../models')
 
 const router = express.Router()
 
@@ -81,11 +81,16 @@ router.post(
       user = new User(req.body)
       await user.save()
 
-      // Create profile
-      const profile = new Profile({
-        user: user.id,
-      })
-      await profile.save()
+      const models = [
+        Profile,
+        Friend
+      ]
+      for (let Model of models) {
+        const object = new Model({
+          user: user.id,
+        })
+        await object.save()
+      }
 
       // Generate token
       const token = await user.generateAuthToken()
