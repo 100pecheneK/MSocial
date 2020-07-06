@@ -3,9 +3,12 @@ const express = require('express')
 // Middleware
 const {auth, checkObjectId} = require('../../../middleware')
 // Utils
-const {sendServerError} = require('../../../utils/sendStatus')
+const {sendServerError, sendBadRequest} = require('../../../utils/sendStatus')
 // Services
-const friendService = require('../../../services/friend')
+const friendService = require('../../../services/friend/friend')
+// Errors
+const FriendServiceError = require('../../../services/friend/FriendServiceError')
+
 
 const router = express.Router()
 
@@ -39,7 +42,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const friends = await friendService.getAllList(req.userId)
+      const friends = await friendService.list.getAll(req.userId)
       res.json(friends)
     } catch (e) {
       sendServerError(res, e)
@@ -71,7 +74,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const whiteList = await friendService.getWhiteList(req.userId)
+      const whiteList = await friendService.whiteList.get(req.userId)
       res.json(whiteList)
     } catch (e) {
       sendServerError(res, e)
@@ -103,7 +106,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const blackList = friendService.getBlackList(req.userId)
+      const blackList = friendService.blackList.get(req.userId)
       res.json(blackList)
     } catch (e) {
       sendServerError(res, e)
@@ -135,7 +138,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const inComingList = friendService.getInComingList(req.userId)
+      const inComingList = friendService.inComingList.get(req.userId)
       res.json(inComingList)
     } catch (e) {
       sendServerError(res, e)
@@ -167,7 +170,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const outComingList = friendService.getOutComingList(req.userId)
+      const outComingList = friendService.outComingList.get(req.userId)
       res.json(outComingList)
     } catch (e) {
       sendServerError(res, e)
@@ -194,13 +197,68 @@ router.get(
   [auth, checkObjectId('id')],
   async (req, res) => {
     try {
-      const whitelist = await friendService.getWhiteList(req.params.id)
+      const whitelist = await friendService.whiteList.get(req.params.id)
       res.json(whitelist)
     } catch (e) {
       sendServerError(res, e)
     }
   }
 )
+
+router.put(
+  '/:id/addRequest',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const targetId = req.params.id
+      const senderId = req.userId
+
+      const msg = await friendService.addRequest(senderId, targetId)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof FriendServiceError) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
+
+router.put(
+  '/:id/removeRequest',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const targetId = req.params.id
+      const senderId = req.userId
+
+      const msg = await friendService.removeRequest(senderId, targetId)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof FriendServiceError) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
+
+// f(acceptRequest):
+// ~permission: owner only
+// +addToWhiteList owner
+// +addToWhiteList sender
+// +remFromOutComingList sender
+
+// f(rejectRequest):
+// ~permission: owner only
+// +remFromInComingList owner
+// +remFromOutComingList sender
+
+// f(banRequest):
+// ~permission: owner only
+// +addToBlackList owner
+// +remFromInComingList owner
+// +remFromOutComingList sender
 
 
 module.exports = router
