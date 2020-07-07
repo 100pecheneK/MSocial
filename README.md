@@ -4,7 +4,7 @@ MSocial - социальная сеть на стеке MERN.
 
 ## INFO
 
-All docs on (https://100pechenek.github.io/MSocial/)[https://100pechenek.github.io/MSocial/]
+All docs [Here](https://100pechenek.github.io/MSocial/)
 ## Заметки для добавления функционала
 
 ### Друзья
