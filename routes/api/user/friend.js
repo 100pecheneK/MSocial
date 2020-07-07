@@ -6,8 +6,6 @@ const {auth, checkObjectId} = require('../../../middleware')
 const {sendServerError, sendBadRequest} = require('../../../utils/sendStatus')
 // Services
 const friendService = require('../../../services/friend/friend')
-// Errors
-const FriendServiceError = require('../../../services/friend/FriendServiceError')
 
 
 const router = express.Router()
@@ -42,7 +40,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const friends = await friendService.list.getAll(req.userId)
+      const friends = await friendService.getFriends(req.userId)
       res.json(friends)
     } catch (e) {
       sendServerError(res, e)
@@ -74,7 +72,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const whiteList = await friendService.whiteList.get(req.userId)
+      const whiteList = await friendService.getWhiteList(req.userId)
       res.json(whiteList)
     } catch (e) {
       sendServerError(res, e)
@@ -106,7 +104,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const blackList = friendService.blackList.get(req.userId)
+      const blackList = await friendService.getBlackList(req.userId)
       res.json(blackList)
     } catch (e) {
       sendServerError(res, e)
@@ -138,7 +136,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const inComingList = friendService.inComingList.get(req.userId)
+      const inComingList = await friendService.getInComingList(req.userId)
       res.json(inComingList)
     } catch (e) {
       sendServerError(res, e)
@@ -170,7 +168,7 @@ router.get(
   auth,
   async (req, res) => {
     try {
-      const outComingList = friendService.outComingList.get(req.userId)
+      const outComingList = await friendService.getOutComingList(req.userId)
       res.json(outComingList)
     } catch (e) {
       sendServerError(res, e)
@@ -197,7 +195,7 @@ router.get(
   [auth, checkObjectId('id')],
   async (req, res) => {
     try {
-      const whitelist = await friendService.whiteList.get(req.params.id)
+      const whitelist = await friendService.getWhiteList(req.params.id)
       res.json(whitelist)
     } catch (e) {
       sendServerError(res, e)
@@ -205,6 +203,20 @@ router.get(
   }
 )
 
+/**
+ * @api {put} /user/friend/:id/addRequest Add request
+ * @apiVersion 0.1.0
+ * @apiName Add request
+ * @apiGroup Friend
+ * @apiDescription Add request to user
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (201) {String} Success created message
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Created
+ *    {
+ *        "msg": "Запрос отправлен"
+ *    }
+ */
 router.put(
   '/:id/addRequest',
   [auth, checkObjectId('id')],
@@ -216,7 +228,7 @@ router.put(
       const msg = await friendService.addRequest(senderId, targetId)
       res.status(201).json({msg})
     } catch (e) {
-      if (e instanceof FriendServiceError) {
+      if (e instanceof friendService.Error) {
         return sendBadRequest(res, e.message)
       }
       sendServerError(res, e)
@@ -224,6 +236,20 @@ router.put(
   }
 )
 
+/**
+ * @api {put} /user/friend/:id/removeRequest Remove request
+ * @apiVersion 0.1.0
+ * @apiName Remove request
+ * @apiGroup Friend
+ * @apiDescription Remove request from user
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (200) {String} Success created message
+ * @apiSuccessExample {json} Success-Response:
+ *    HTTP/1.1 200 Success
+ *    {
+ *        "msg": "Запрос отменён"
+ *    }
+ */
 router.put(
   '/:id/removeRequest',
   [auth, checkObjectId('id')],
@@ -233,9 +259,9 @@ router.put(
       const senderId = req.userId
 
       const msg = await friendService.removeRequest(senderId, targetId)
-      res.status(201).json({msg})
+      res.json({msg})
     } catch (e) {
-      if (e instanceof FriendServiceError) {
+      if (e instanceof friendService.Error) {
         return sendBadRequest(res, e.message)
       }
       sendServerError(res, e)

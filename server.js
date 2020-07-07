@@ -19,6 +19,12 @@ app.use('/api/test', require('./routes/api/test'))
 app.use('/api/user', require('./routes/api/user/index'))
 app.use('/api/profile', require('./routes/api/profile'))
 
+// Define Errors catchers
+app.use(function (req, res) {
+  res.status(404).send('Sorry cant find that!')
+})
+
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
   app.get('*', (req, res) => {

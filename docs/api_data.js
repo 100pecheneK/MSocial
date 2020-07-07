@@ -369,6 +369,50 @@ define({ "api": [
     "groupTitle": "Authentication"
   },
   {
+    "type": "put",
+    "url": "/user/friend/:id/addRequest",
+    "title": "Add request",
+    "version": "0.1.0",
+    "name": "Add_request",
+    "group": "Friend",
+    "description": "<p>Add request to user</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "201": [
+          {
+            "group": "201",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Запрос отправлен\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
     "type": "get",
     "url": "/user/friend/me/blackList",
     "title": "My black list",
@@ -672,6 +716,50 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 Success\n{\n  \"outComingList\": [],\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "put",
+    "url": "/user/friend/:id/removeRequest",
+    "title": "Remove request",
+    "version": "0.1.0",
+    "name": "Remove_request",
+    "group": "Friend",
+    "description": "<p>Remove request from user</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Запрос отменён\"\n}",
           "type": "json"
         }
       ]
