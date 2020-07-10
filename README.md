@@ -4,11 +4,7 @@ MSocial - социальная сеть на стеке MERN.
 
 ## INFO
 
-In README foilder you cat find:
-
-- Server api guide (API.md)
-- Models Schema in drawio (Models.drawio)
-
+All docs [Here](https://100pechenek.github.io/MSocial/)
 ## Заметки для добавления функционала
 
 ### Друзья
