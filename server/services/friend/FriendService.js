@@ -153,7 +153,7 @@ class FriendService {
    * Remove "whom" request from "fromWhom"
    * @param whom
    * @param fromWhom
-   * @return {Promise<string>}
+   * @return {Promise<string>} Сообщение успеха
    */
   async removeRequest(whom, fromWhom) {
     const target = await this._list.getAll(fromWhom)
@@ -162,6 +162,36 @@ class FriendService {
     await this._inComingList.rem(whom, fromWhom)
     await this._outComingList.rem(fromWhom, whom)
     return 'Запрос отменён'
+  }
+
+  /**
+   * "Who" accepting request from "whom"
+   * @param who
+   * @param whom
+   * @return {Promise<string>} Сообщение успеха
+   */
+  async acceptRequest(who, whom) {
+    return 'Function "acceptRequest" is not implemented yet'
+  }
+
+  /**
+   * "Who" rejecting request from "whom"
+   * @param who
+   * @param whom
+   * @return {Promise<string>} Сообщение успеха
+   */
+  async rejectRequest(who, whom) {
+    return 'Function "rejectRequest" is not implemented yet'
+  }
+
+  /**
+   * "Who" add "user" to Black List
+   * @param who
+   * @param user
+   * @return {Promise<string>} Сообщение успеха
+   */
+  async blockUser(who, user) {
+    return 'Function "rejectRequestAndBlock" is not implemented yet'
   }
 }
 

@@ -270,20 +270,19 @@ router.put(
 )
 
 // f(acceptRequest):
-// ~permission: owner only
 // +addToWhiteList owner
 // +addToWhiteList sender
 // +remFromOutComingList sender
 
 // f(rejectRequest):
-// ~permission: owner only
 // +remFromInComingList owner
 // +remFromOutComingList sender
 
-// f(banRequest):
-// ~permission: owner only
+// f(blockUser):
 // +addToBlackList owner
 // +remFromInComingList owner
+// +remFromWhiteList owner
+// +remFromWhiteList sender
 // +remFromOutComingList sender
 
 

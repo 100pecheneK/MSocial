@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node server.js",
     "devserver": "nodemon server.js",
-    "devclient": "yarn --cwd ./client start ",
+    "devclient": "yarn --cwd ../client start ",
     "dev": "concurrently \"yarn run devserver\" \"yarn run devclient\"",
     "doc": "apidoc -i ./routes -o ./docs"
   },
