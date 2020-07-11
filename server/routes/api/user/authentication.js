@@ -13,7 +13,7 @@ const router = express.Router()
 
 /**
  * @api {post} /user/auth/register Register user
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Register
  * @apiGroup Authentication
  * @apiDescription Register new user
@@ -104,7 +104,7 @@ router.post(
 
 /**
  * @api {post} /user/auth/login Authenticate user
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Login
  * @apiGroup Authentication
  * @apiDescription Authenticate user
@@ -178,7 +178,7 @@ router.post(
 
 /**
  * @api {get} /user/auth/logout Logout user
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Logout
  * @apiGroup Authentication
  * @apiDescription Logout user from current device
@@ -214,7 +214,7 @@ router.get('/logout', auth, async (req, res) => {
 
 /**
  * @api {get} /user/auth/logoutall Logout user everywhere
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Logout All
  * @apiGroup Authentication
  * @apiDescription Logout user from all devices

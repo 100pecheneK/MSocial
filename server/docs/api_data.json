@@ -3,7 +3,7 @@
     "type": "post",
     "url": "/user/auth/login",
     "title": "Authenticate user",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Login",
     "group": "Authentication",
     "description": "<p>Authenticate user</p>",
@@ -99,7 +99,7 @@
     "type": "get",
     "url": "/user/auth/logout",
     "title": "Logout user",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Logout",
     "group": "Authentication",
     "description": "<p>Logout user from current device</p>",
@@ -186,7 +186,7 @@
     "type": "get",
     "url": "/user/auth/logoutall",
     "title": "Logout user everywhere",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Logout_All",
     "group": "Authentication",
     "description": "<p>Logout user from all devices</p>",
@@ -273,7 +273,7 @@
     "type": "post",
     "url": "/user/auth/register",
     "title": "Register user",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Register",
     "group": "Authentication",
     "description": "<p>Register new user</p>",
@@ -370,9 +370,53 @@
   },
   {
     "type": "put",
+    "url": "/user/friend/:id/acceptRequest",
+    "title": "Accept request",
+    "version": "1.0.0",
+    "name": "Accept_request",
+    "group": "Friend",
+    "description": "<p>Accepting request from user</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Success\n{\n    \"msg\": \"Друг добавлен\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "put",
     "url": "/user/friend/:id/addRequest",
     "title": "Add request",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Add_request",
     "group": "Friend",
     "description": "<p>Add request to user</p>",
@@ -413,10 +457,54 @@
     "groupTitle": "Friend"
   },
   {
+    "type": "put",
+    "url": "/user/friend/:id/blockUser",
+    "title": "Block user",
+    "version": "1.0.0",
+    "name": "Block_user",
+    "group": "Friend",
+    "description": "<p>Add user to black list</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Success\n{\n    \"msg\": \"Пользователь заблокирован\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
     "type": "get",
     "url": "/user/friend/me/blackList",
     "title": "My black list",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "My_Black_list",
     "group": "Friend",
     "description": "<p>Get black list of authenticated user</p>",
@@ -474,7 +562,7 @@
     "type": "get",
     "url": "/user/friend/me",
     "title": "My Friend List",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "My_Friends",
     "group": "Friend",
     "description": "<p>Get all friend list of authenticated user</p>",
@@ -553,7 +641,7 @@
     "type": "get",
     "url": "/user/friend/me/whitelist",
     "title": "My white list",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "My_White_list",
     "group": "Friend",
     "description": "<p>Get white list of authenticated user</p>",
@@ -611,7 +699,7 @@
     "type": "get",
     "url": "/user/friend/me/incominglist",
     "title": "My incoming request",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "My_incoming_requests",
     "group": "Friend",
     "description": "<p>Get incoming request list of authenticated user</p>",
@@ -669,7 +757,7 @@
     "type": "get",
     "url": "/user/friend/me/outcominglist",
     "title": "My outcoming request",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "My_outcoming_requests",
     "group": "Friend",
     "description": "<p>Get incoming request list of authenticated user</p>",
@@ -725,9 +813,97 @@
   },
   {
     "type": "put",
+    "url": "/user/friend/:id/rejectRequest",
+    "title": "Reject request",
+    "version": "1.0.0",
+    "name": "Reject_request",
+    "group": "Friend",
+    "description": "<p>Rejecting request from user</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Success\n{\n    \"msg\": \"Запрос отклонён\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "put",
+    "url": "/user/friend/:id/removeFriend",
+    "title": "Remove friend",
+    "version": "1.0.0",
+    "name": "Remove_friend",
+    "group": "Friend",
+    "description": "<p>Remove friendship</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User`s id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "String",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>created message</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Success\n{\n    \"msg\": \"Друг удалён\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/api/user/friend.js",
+    "groupTitle": "Friend"
+  },
+  {
+    "type": "put",
     "url": "/user/friend/:id/removeRequest",
     "title": "Remove request",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Remove_request",
     "group": "Friend",
     "description": "<p>Remove request from user</p>",
@@ -758,8 +934,8 @@
       },
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Запрос отменён\"\n}",
+          "title": "Created-Response:",
+          "content": "HTTP/1.1 201 Success\n{\n    \"msg\": \"Запрос отменён\"\n}",
           "type": "json"
         }
       ]
@@ -771,7 +947,7 @@
     "type": "get",
     "url": "/user/friend/:id/whitelist",
     "title": "User white list",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Selected_user_whitelist",
     "group": "Friend",
     "description": "<p>Get white list of selected user</p>",
@@ -815,7 +991,7 @@
     "type": "delete",
     "url": "/profile/me",
     "title": "Delete user account",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Delete_user_account",
     "group": "Profile",
     "description": "<p>Delete User, User folder and Profile</p>",
@@ -873,7 +1049,7 @@
     "type": "post",
     "url": "/profile/me",
     "title": "Update User Profile",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "Update_User_Profile",
     "group": "Profile",
     "description": "<p>Create or update some fields in user profile</p>",
@@ -958,7 +1134,7 @@
     "type": "post",
     "url": "/profile/me/avatar",
     "title": "Change user avatar",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "User_avatar",
     "group": "Profile",
     "description": "<p>Change avatar of user</p>",
@@ -1057,7 +1233,7 @@
     "type": "get",
     "url": "/profile/me",
     "title": "User info",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "name": "User_me",
     "group": "Profile",
     "description": "<p>Get info of authenticated user</p>",

@@ -63,6 +63,49 @@ class FriendService {
   }
 
   /**
+   * Delete request from incoming adn outcoming lists
+   * @param who
+   * @param whom
+   * @return {Promise<string>}
+   * @private
+   */
+  async _deleteRequest(who, whom) {
+    await this._inComingList.rem(whom, who)
+    await this._outComingList.rem(who, whom)
+    return 'Запрос удалён'
+  }
+
+  /**
+   * Добавить в друзья кого-то кому-то
+   * @param whom
+   * @param toWhom
+   * @return {Promise<string>} Сообщение успеха
+   * @private
+   */
+  async _makeFriends(whom, toWhom) {
+    await this._outComingList.rem(toWhom, whom)
+    await this._outComingList.rem(whom, toWhom)
+    await this._inComingList.rem(whom, toWhom)
+    await this._inComingList.rem(toWhom, whom)
+    await this._whiteList.add(whom, toWhom)
+    await this._whiteList.add(toWhom, whom)
+    return 'Друг добавлен'
+  }
+
+  /**
+   * Раздрузить. Удалить друг друга из друзей
+   * @param who
+   * @param whom
+   * @return {Promise<string>} Сообщение успеха
+   * @private
+   */
+  async _unmakeFriend(who, whom) {
+    await this._whiteList.rem(who, whom)
+    await this._whiteList.rem(whom, who)
+    return 'Друг удалён'
+  }
+
+  /**
    * Return all Friend object for user with "id"
    * @param id
    */
@@ -114,7 +157,7 @@ class FriendService {
     this._throwErrorIfNotExists(target)
     // Отправитель сам себе отправил запрос
     if (whom === target.user.toString()) {
-      throw new FriendServiceError('Вы не можете добавить себя в друзья')
+      throw new this._Error('Вы не можете добавить себя в друзья')
     }
     // Отправитель в чёрном списке
     this._throwErrorIfContains(whom, target.blackList, 'Вы в чёрном списке')
@@ -124,8 +167,10 @@ class FriendService {
     this._throwErrorIfContains(whom, target.inComingList, 'Вы уже отправили заявку')
     // Отправитель отправил заявку, но получатель отправлял ранее, поэтому добавил в друзья
     if (this._isContains(whom, target.outComingList)) {
-      return await this.makeFriends(whom, toWhom)
+      return await this._makeFriends(whom, toWhom)
     }
+    // Удалить получателя из черного списка
+    await this._blackList.rem(toWhom, whom)
     // Отправитель не отправлял заявку и получатель тоже,
     // поэтому добавить в исходящий и входящий список
     await this._outComingList.add(toWhom, whom)
@@ -133,21 +178,6 @@ class FriendService {
     return 'Запрос отправлен'
   }
 
-  /**
-   * Добавить в друзья кого-то кому-то
-   * @param whom
-   * @param toWhom
-   * @return {Promise<string>} Сообщение успеха
-   */
-  async makeFriends(whom, toWhom) {
-    await this._outComingList.rem(toWhom, whom)
-    await this._outComingList.rem(whom, toWhom)
-    await this._inComingList.rem(whom, toWhom)
-    await this._inComingList.rem(toWhom, whom)
-    await this._whiteList.add(whom, toWhom)
-    await this._whiteList.add(toWhom, whom)
-    return 'Друг добавлен'
-  }
 
   /**
    * Remove "whom" request from "fromWhom"
@@ -157,10 +187,12 @@ class FriendService {
    */
   async removeRequest(whom, fromWhom) {
     const target = await this._list.getAll(fromWhom)
+    // Ошибка если пользователя не существует
     this._throwErrorIfNotExists(target)
+    // Ошбка если заявка не отправлялась
     this._throwErrorIfNotContains(whom, target.inComingList, 'Вы не отправляли запрос')
-    await this._inComingList.rem(whom, fromWhom)
-    await this._outComingList.rem(fromWhom, whom)
+    // Удаление заявки из входящего и исходящего листа
+    await this._deleteRequest(whom, fromWhom)
     return 'Запрос отменён'
   }
 
@@ -171,8 +203,19 @@ class FriendService {
    * @return {Promise<string>} Сообщение успеха
    */
   async acceptRequest(who, whom) {
-    return 'Function "acceptRequest" is not implemented yet'
+    const whoObject = await this._list.getAll(who)
+    // Ошибка если заявки нет
+    this._throwErrorIfNotContains(whom, whoObject.inComingList, 'Заявка не найдена')
+    // Ошибка если пользователь уже в друзьях
+    this._throwErrorIfContains(whom, whoObject.whiteList, 'Вы уже приняли заявку')
+    // Удалить из черного списка (если есть)
+    if (this._isContains(whom, whoObject.blackList)) {
+      this._blackList.rem(whom, who)
+    }
+    // Сделать друзьями
+    return await this._makeFriends(who, whom)
   }
+
 
   /**
    * "Who" rejecting request from "whom"
@@ -181,17 +224,49 @@ class FriendService {
    * @return {Promise<string>} Сообщение успеха
    */
   async rejectRequest(who, whom) {
-    return 'Function "rejectRequest" is not implemented yet'
+    const whoObject = await this._list.getAll(who)
+    // Ошибка если заявки нет
+    this._throwErrorIfNotContains(whom, whoObject.inComingList, 'Заявка не найдена')
+    // Удалить запрос из входящего и исходящего листа
+    await this._deleteRequest(who, whom)
+    return 'Запос отклонён'
   }
 
   /**
    * "Who" add "user" to Black List
    * @param who
-   * @param user
+   * @param whom
    * @return {Promise<string>} Сообщение успеха
    */
-  async blockUser(who, user) {
-    return 'Function "rejectRequestAndBlock" is not implemented yet'
+  async blockUser(who, whom) {
+    const whoObject = await this._list.getAll(who)
+    // Ошибка если в чёрном списке
+    this._throwErrorIfContains(whom, whoObject.blackList, 'Пользователь уже в чёрном списке')
+    // Удалить из друзей если есть
+    if (this._isContains(who, whoObject.whiteList)) {
+      await this._unmakeFriend(who, whom)
+    }
+    // Удалить заявку если есть
+    if (this._isContains(whom, whoObject.inComingList)) {
+      await this._deleteRequest(who, whom)
+    }
+    // Добавить в чёрынй список
+    await this._blackList.add(whom, who)
+    return 'Пользователь заблокирован'
+  }
+
+  /**
+   * Remove friendship
+   * @param who
+   * @param whom
+   * @return {Promise<string>}
+   */
+  async removeFriend(who, whom) {
+    const whomWhiteList = await this._whiteList.get(whom)
+    // Ошибка если не друзья
+    this._throwErrorIfNotContains(who, whomWhiteList.whiteList, 'Вы не друзья')
+    // Удалить друга
+    return await this._unmakeFriend(who, whom)
   }
 }
 

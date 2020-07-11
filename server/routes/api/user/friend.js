@@ -12,7 +12,7 @@ const router = express.Router()
 
 /**
  * @api {get} /user/friend/me My Friend List
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName My Friends
  * @apiGroup Friend
  * @apiDescription Get all friend list of authenticated user
@@ -50,7 +50,7 @@ router.get(
 
 /**
  * @api {get} /user/friend/me/whitelist My white list
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName My White list
  * @apiGroup Friend
  * @apiDescription Get white list of authenticated user
@@ -82,7 +82,7 @@ router.get(
 
 /**
  * @api {get} /user/friend/me/blackList My black list
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName My Black list
  * @apiGroup Friend
  * @apiDescription Get black list of authenticated user
@@ -114,7 +114,7 @@ router.get(
 
 /**
  * @api {get} /user/friend/me/incominglist My incoming request
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName My incoming requests
  * @apiGroup Friend
  * @apiDescription Get incoming request list of authenticated user
@@ -146,7 +146,7 @@ router.get(
 
 /**
  * @api {get} /user/friend/me/outcominglist My outcoming request
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName My outcoming requests
  * @apiGroup Friend
  * @apiDescription Get incoming request list of authenticated user
@@ -178,7 +178,7 @@ router.get(
 
 /**
  * @api {get} /user/friend/:id/whitelist User white list
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Selected user whitelist
  * @apiGroup Friend
  * @apiDescription Get white list of selected user
@@ -205,7 +205,7 @@ router.get(
 
 /**
  * @api {put} /user/friend/:id/addRequest Add request
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Add request
  * @apiGroup Friend
  * @apiDescription Add request to user
@@ -238,14 +238,14 @@ router.put(
 
 /**
  * @api {put} /user/friend/:id/removeRequest Remove request
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Remove request
  * @apiGroup Friend
  * @apiDescription Remove request from user
  * @apiParam {ObjectId} id User`s id
  * @apiSuccess (200) {String} Success created message
- * @apiSuccessExample {json} Success-Response:
- *    HTTP/1.1 200 Success
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Success
  *    {
  *        "msg": "Запрос отменён"
  *    }
@@ -269,21 +269,135 @@ router.put(
   }
 )
 
-// f(acceptRequest):
-// +addToWhiteList owner
-// +addToWhiteList sender
-// +remFromOutComingList sender
+/**
+ * @api {put} /user/friend/:id/acceptRequest Accept request
+ * @apiVersion 1.0.0
+ * @apiName Accept request
+ * @apiGroup Friend
+ * @apiDescription Accepting request from user
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (200) {String} Success created message
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Success
+ *    {
+ *        "msg": "Друг добавлен"
+ *    }
+ */
+router.put(
+  '/:id/acceptRequest',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const sender = req.params.id
+      const currentUser = req.userId
 
-// f(rejectRequest):
-// +remFromInComingList owner
-// +remFromOutComingList sender
+      const msg = await friendService.acceptRequest(currentUser, sender)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof friendService.Error) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
 
-// f(blockUser):
-// +addToBlackList owner
-// +remFromInComingList owner
-// +remFromWhiteList owner
-// +remFromWhiteList sender
-// +remFromOutComingList sender
+/**
+ * @api {put} /user/friend/:id/rejectRequest Reject request
+ * @apiVersion 1.0.0
+ * @apiName Reject request
+ * @apiGroup Friend
+ * @apiDescription Rejecting request from user
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (200) {String} Success created message
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Success
+ *    {
+ *        "msg": "Запрос отклонён"
+ *    }
+ */
+router.put(
+  '/:id/rejectRequest',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const sender = req.params.id
+      const currentUser = req.userId
 
+      const msg = await friendService.rejectRequest(currentUser, sender)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof friendService.Error) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
 
+/**
+ * @api {put} /user/friend/:id/blockUser Block user
+ * @apiVersion 1.0.0
+ * @apiName Block user
+ * @apiGroup Friend
+ * @apiDescription Add user to black list
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (200) {String} Success created message
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Success
+ *    {
+ *        "msg": "Пользователь заблокирован"
+ *    }
+ */
+router.put(
+  '/:id/blockUser',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const sender = req.params.id
+      const currentUser = req.userId
+
+      const msg = await friendService.blockUser(currentUser, sender)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof friendService.Error) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
+
+/**
+ * @api {put} /user/friend/:id/removeFriend Remove friend
+ * @apiVersion 1.0.0
+ * @apiName Remove friend
+ * @apiGroup Friend
+ * @apiDescription Remove friendship
+ * @apiParam {ObjectId} id User`s id
+ * @apiSuccess (200) {String} Success created message
+ * @apiSuccessExample {json} Created-Response:
+ *    HTTP/1.1 201 Success
+ *    {
+ *        "msg": "Друг удалён"
+ *    }
+ */
+router.put(
+  '/:id/removeFriend',
+  [auth, checkObjectId('id')],
+  async (req, res) => {
+    try {
+      const sender = req.params.id
+      const currentUser = req.userId
+
+      const msg = await friendService.removeFriend(currentUser, sender)
+      res.status(201).json({msg})
+    } catch (e) {
+      if (e instanceof friendService.Error) {
+        return sendBadRequest(res, e.message)
+      }
+      sendServerError(res, e)
+    }
+  }
+)
 module.exports = router

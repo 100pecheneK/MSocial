@@ -8,19 +8,19 @@ const FriendSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
-  whiteList:{
+  whiteList: {
     type: Array,
     default: []
   },
-  inComingList:{
+  inComingList: {
     type: Array,
     default: []
   },
-  outComingList:{
+  outComingList: {
     type: Array,
     default: []
   },
-  blackList:{
+  blackList: {
     type: Array,
     default: []
   }

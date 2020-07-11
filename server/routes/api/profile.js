@@ -13,7 +13,7 @@ const router = express.Router()
 
 /**
  * @api {get} /profile/me User info
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName User me
  * @apiGroup Profile
  * @apiDescription Get info of authenticated user
@@ -55,7 +55,7 @@ router.get(
 
 /**
  * @api {post} /profile/me/avatar Change user avatar
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName User avatar
  * @apiGroup Profile
  * @apiDescription Change avatar of user
@@ -110,7 +110,7 @@ router.post(
 
 /**
  * @api {post} /profile/me Update User Profile
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Update User Profile
  * @apiGroup Profile
  * @apiDescription Create or update some fields in user profile
@@ -164,7 +164,7 @@ router.post(
 
 /**
  * @api {delete} /profile/me Delete user account
- * @apiVersion 0.1.0
+ * @apiVersion 1.0.0
  * @apiName Delete user account
  * @apiGroup Profile
  * @apiDescription Delete User, User folder and Profile
